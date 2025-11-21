@@ -84,7 +84,7 @@ class HomeFragment : Fragment() {
 
     private fun parseAndDisplayData(jsonString: String) {
         try {
-            val response = gson.fromJson(jsonString, JsonResponse::class.java)
+            val response = gson.fromJson(jsonString, JsonResponseCatalog::class.java)
             val texts = response.texts
 
             textAdapter = TextCardAdapter(texts)

@@ -33,4 +33,9 @@
         android:name="com.example.languageleap.ui.register.RegisterFragment"
         android:label="Регистрация"
         tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/nav_learn"
+        android:name="com.example.languageleap.ui.quiz.QuizMainFragment"
+        android:label="Учить слова"
+        tools:layout="@layout/fragment_quiz_main" />
 </navigation>

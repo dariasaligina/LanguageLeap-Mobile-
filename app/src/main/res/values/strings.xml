@@ -14,4 +14,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="to_registration">К регистрации</string>
     <string name="to_login">К входу</string>
+    <string name="learn_today">Сегодня вам следует повторить 0 слов.</string>
+    <string name="translate">Выберите перевод слова</string>
+    <string name="remember">Вспомните перевод слова, нажмите на слово, чтобы узнать ответ</string>
+    <string name="learn_words">Учить слова</string>
 </resources>

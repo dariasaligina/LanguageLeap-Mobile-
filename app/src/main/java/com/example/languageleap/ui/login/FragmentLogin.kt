@@ -57,6 +57,7 @@ class FragmentLogin : Fragment() {
                 // Вызываем функцию логина во ViewModel
                 // ВАЖНО: Мы переместим логику OkHttp в ViewModel
                 sharedViewModel.loginUser(username, password)
+
                 sharedViewModel.authData.observe(viewLifecycleOwner) { authResponse ->
                     authResponse?.let {
                         // Show token if authentication is successful

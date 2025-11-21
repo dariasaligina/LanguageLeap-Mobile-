@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.languageleap.databinding.ItemTextCardBinding
 import com.squareup.picasso.Picasso
 
-class TextCardAdapter(private val textList: List<TextItem>) :
+class TextCardAdapter(private val textList: List<TextCardItem>) :
     RecyclerView.Adapter<TextCardAdapter.TextCardViewHolder>() {
 
     inner class TextCardViewHolder(private val binding: ItemTextCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(textItem: TextItem) {
+        fun bind(textItem: TextCardItem) {
             binding.textViewTitle.text = textItem.name
             binding.textViewLevel.text = textItem.language_level
             binding.textViewLikes.text = textItem.likes.toString()

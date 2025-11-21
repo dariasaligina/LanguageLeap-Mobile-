@@ -1,13 +1,13 @@
 package com.example.languageleap
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.languageleap.ui.quiz.JsonResponseCurrentWords
+import com.example.languageleap.ui.quiz.Word
 import com.google.gson.Gson
 import okhttp3.Call
-import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -41,6 +41,14 @@ class SharedDataViewModel : ViewModel() {
     private val client = OkHttpClient()
     private val gson = Gson()
 
+
+    fun getToken():String{
+
+        return _authData.value!!.token
+    }
+
+
+
     // 4. Функция для обновления данных после успешной авторизации
     fun setAuthenticationData(data: AuthResponse) {
         _authData.value = data
@@ -71,15 +79,27 @@ class SharedDataViewModel : ViewModel() {
                 Log.e("Login", "Error: ${e.message}")
             }
             override fun onResponse(call: Call, response: Response) {
-                if (response.isSuccessful) {
-                    response.body?.string()?.let { responseBody ->
-                        val authResponse = gson.fromJson(responseBody, AuthResponse::class.java)
-                        setAuthenticationData(authResponse)
+                try {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body?.string() // Read the response body
+                        Log.d("Login", "Response: $responseBody") // Log response for debugging
 
+                        responseBody?.let {
+                            // Attempt to parse the response to AuthResponse
+                            val authResponse = gson.fromJson(it, AuthResponse::class.java)
+                            _authData.postValue(authResponse)
+
+                        } ?: run {
+                            Log.e("Login", "Response body is null")
+                        }
+                    } else {
+                        Log.e("Login", "Error: ${response.message}")
                     }
-                } else {
-                    Log.e("Login", "Error: ${response.body?.string()}")
+
+                } catch (e: Exception) {
+                    Log.e("Login", "Error parsing response: ${e.message}")
                 }
+
             }
         })
     }

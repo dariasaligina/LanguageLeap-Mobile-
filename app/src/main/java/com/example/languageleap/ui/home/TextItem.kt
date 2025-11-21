@@ -1,6 +1,6 @@
 package com.example.languageleap.ui.home
 
-data class TextItem(
+data class TextCardItem(
     val id: Int,
     val name: String,
     val language_id: Int,
@@ -9,6 +9,6 @@ data class TextItem(
     val likes: Int
 )
 
-data class JsonResponse(
-    val texts: List<TextItem>
+data class JsonResponseCatalog(
+    val texts: List<TextCardItem>
 )
