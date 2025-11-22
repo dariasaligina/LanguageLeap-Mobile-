@@ -31,5 +31,6 @@
             android:icon="@drawable/school_24px"
             android:title="@string/learn_words"
             />
+
     </group>
 </menu>

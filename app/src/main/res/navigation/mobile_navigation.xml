@@ -38,4 +38,14 @@
         android:name="com.example.languageleap.ui.quiz.QuizMainFragment"
         android:label="Учить слова"
         tools:layout="@layout/fragment_quiz_main" />
+
+    <fragment
+        android:id="@+id/quizAudioFragment"
+        android:name="com.example.languageleap.ui.quiz.QuizAudioFragment"
+        android:label="Quiz Audio" />
+
+    <action
+        android:id="@+id/action_quizMainFragment_to_quizAudioFragment"
+        app:destination="@id/quizAudioFragment" />
+
 </navigation>

@@ -14,6 +14,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavAction
+import androidx.navigation.fragment.findNavController
 import com.example.languageleap.MainActivity
 import com.example.languageleap.SharedDataViewModel
 import com.example.languageleap.R
@@ -25,6 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.security.DrbgParameters
 
 
 class QuizMainFragment : Fragment() {
@@ -37,10 +40,7 @@ class QuizMainFragment : Fragment() {
 
     private lateinit var container: ViewGroup
     private lateinit var currentWords: JsonResponseCurrentWords
-    private val mainLayout = R.layout.fragment_quiz_main
-    private val audioLayout = R.layout.fragment_quiz_audio
-    private val textLayout = R.layout.fragment_quiz_text
-    private val cardLayout = R.layout.fragment_quiz_fleshcard
+
     private lateinit var currentView: View
 
 
@@ -55,18 +55,13 @@ class QuizMainFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         try{
-        container = container1!!
-        currentView= inflater.inflate(mainLayout, container, false)
-        //audioLayout = inflater.inflate(R.layout.fragment_quiz_audio, container, false)
-        //textLayout = inflater.inflate(R.layout.fragment_quiz_text, container, false)
-        //cardLayout = inflater.inflate(R.layout.fragment_quiz_fleshcard, container, false)
-
-        var text: TextView = currentView.findViewById( R.id.textView3)
-        var button: Button = currentView.findViewById(R.id.button2)
-        loadDataFromNetwork()
-        button.setOnClickListener {
-            runQuiz();
-        }
+            container = container1!!
+            currentView = inflater.inflate(R.layout.fragment_quiz_main, container, false)
+            var button: Button = currentView.findViewById(R.id.button2)
+            loadDataFromNetwork()
+            button.setOnClickListener {
+                showNextQuestion()
+            }
        }
         catch (e: Exception){
             Log.e("BuildLayout", "${e.message}", e)
@@ -75,69 +70,29 @@ class QuizMainFragment : Fragment() {
     }
 
 
-    private fun runQuiz(){
-        var words= currentWords.words
-        for (word in words)
-            showQuestion(word)
 
 
-    }
+    private fun showNextQuestion(){
+        sharedViewModel.NextWord+=1
+        if (sharedViewModel.CurrentWords == null || sharedViewModel.CurrentWords!!.words.size <= sharedViewModel.NextWord){
+            loadDataFromNetwork()
+            sharedViewModel.NextWord = 0
+            if (sharedViewModel.CurrentWords == null || sharedViewModel.CurrentWords!!.words.size <= sharedViewModel.NextWord)
+                return
+        }
+        val word = sharedViewModel.CurrentWords!!.words[sharedViewModel.NextWord]
 
-    private fun showQuestion(word: Word){
-        var all_words = currentWords.all_words
-        all_words.shuffle()
-        var arr = arrayOf(all_words[0], all_words[1], all_words[2], word)
-        arr.shuffle()
         if (word.knowledge == 1){
-            changeLayout(audioLayout)
-
-            val button: ImageButton = currentView.findViewById(R.id.imageButton2)
-            button.setOnClickListener {
-                val url = "http://192.168.0.34:8000"+word.audio // your URL here
-                val mediaPlayer = MediaPlayer().apply {
-                    setAudioAttributes(
-                        AudioAttributes.Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                            .setUsage(AudioAttributes.USAGE_MEDIA)
-                            .build()
-                    )
-                    setDataSource(url)
-                    prepare() // might take long! (for buffering, etc)
-                    start()
-                }
-            }
-            val buttons = arrayOf<Button>(currentView.findViewById(R.id.button6),
-                currentView.findViewById(R.id.button7),
-                currentView.findViewById(R.id.button8),
-                currentView.findViewById(R.id.button9))
-            for (i in 0..3){
-                buttons[i].setText(arr[i].word)
-                if (arr[i] == word)
-                    buttons[i].setOnClickListener{
-                        correct_answer()
-                    }
-                else
-                    buttons[i].setOnClickListener{
-                        wrong_answer()
-                    }
+            try{
+                findNavController().navigate(R.id.quizAudioFragment)
+            } catch (e: Exception){
+                Log.e("ChangeLayout", "${e.message}", e)
             }
         }
     }
 
-    private fun changeLayout(newLayoutResource: Int) {
-        try{
-            val newLayout = LayoutInflater.from(context).inflate(newLayoutResource, container, false)
 
-            val parent = currentView.parent as ViewGroup
-            parent.removeView(currentView)
-            parent.addView(newLayout)
 
-            currentView = newLayout
-        }
-        catch (e: Exception){
-            Log.e("ChangeLayout", "${e.message}", e)
-        }
-    }
 
     fun correct_answer(){
         Toast.makeText(context, "correct ", Toast.LENGTH_SHORT).show()
@@ -185,6 +140,7 @@ class QuizMainFragment : Fragment() {
             var text: TextView = currentView.findViewById(R.id.textView3)
             text.setText("Сегодня вам следует повторить ${response.words.size} слов.")
             currentWords=response
+            sharedViewModel.CurrentWords = response
 
 
         } catch (e: Exception) {

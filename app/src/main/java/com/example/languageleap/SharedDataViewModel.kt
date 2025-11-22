@@ -40,6 +40,8 @@ class SharedDataViewModel : ViewModel() {
     val authData: LiveData<AuthResponse?> = _authData
     private val client = OkHttpClient()
     private val gson = Gson()
+    var CurrentWords: JsonResponseCurrentWords? = null
+    var NextWord:Int = -1
 
 
     fun getToken():String{

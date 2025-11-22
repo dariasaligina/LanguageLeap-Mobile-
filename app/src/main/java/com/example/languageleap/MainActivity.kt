@@ -17,6 +17,7 @@ import com.example.languageleap.databinding.AppBarMainBinding
 import com.google.gson.Gson
 import com.example.languageleap.databinding.ContentMainBinding
 import com.example.languageleap.ui.home.TextCardAdapter
+import com.example.languageleap.ui.quiz.QuizAudioFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null)
                 .setAnchorView(R.id.fab).show()
         }
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -46,7 +48,8 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_login, R.id.nav_registration,R.id.nav_learn
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
+                R.id.nav_login, R.id.nav_registration,R.id.nav_learn,
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
