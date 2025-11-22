@@ -5,10 +5,80 @@
     android:layout_height="match_parent"
     tools:context=".ui.addText.AddTextFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/titleEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30px"
+                android:hint="Название" />
+
+            <EditText
+                android:id="@+id/textEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Текст"
+                android:layout_margin="30px"
+                android:inputType="textMultiLine" />
+
+            <Spinner
+                android:id="@+id/languageSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30px"
+                android:entries="@array/language_options"
+                android:hint="Язык" />
+
+            <Spinner
+                android:id="@+id/levelSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30px"
+                android:entries="@array/language_levels"
+                android:hint="Уровень языка" />
+
+            <Button
+                android:id="@+id/imageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30px"
+                android:text="Выберите файл изображения" />
+
+            <Button
+                android:id="@+id/audioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30px"
+                android:text="Выберите файл аудио" />
+
+            <CheckBox
+                android:id="@+id/publicCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="30px"
+                android:text="Доступно всем пользователям" />
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30px"
+                android:text="Сохранить" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </FrameLayout>

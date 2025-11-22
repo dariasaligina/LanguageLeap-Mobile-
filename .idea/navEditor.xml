@@ -8,6 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="addTextFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="nav_gallery">
                     <value>
                       <LayoutPositions>
@@ -92,7 +104,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="quizAudioFragmet">
+                  <entry key="textFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
