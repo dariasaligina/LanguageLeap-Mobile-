@@ -31,6 +31,11 @@
             android:icon="@drawable/school_24px"
             android:title="@string/learn_words"
             />
+        <item
+            android:id="@+id/textFragment"
+            android:icon="@drawable/school_24px"
+            android:title="Text"
+            />
 
     </group>
 </menu>

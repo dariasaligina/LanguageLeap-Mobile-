@@ -44,8 +44,11 @@
         android:name="com.example.languageleap.ui.quiz.QuizAudioFragment"
         android:label="Quiz Audio" />
 
-    <action
-        android:id="@+id/action_quizMainFragment_to_quizAudioFragment"
-        app:destination="@id/quizAudioFragment" />
+    <fragment
+        android:id="@+id/textFragment"
+        android:name="com.example.languageleap.ui.text.TextFragment"
+        android:label="Text" />
+
+
 
 </navigation>
