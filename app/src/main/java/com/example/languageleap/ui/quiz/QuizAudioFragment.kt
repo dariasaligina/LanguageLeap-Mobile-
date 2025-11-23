@@ -3,6 +3,7 @@ package com.example.languageleap.ui.quiz
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.example.languageleap.R
 import com.example.languageleap.SharedDataViewModel
 import com.example.languageleap.databinding.ActivityMainBinding
@@ -31,10 +34,12 @@ class QuizAudioFragment : Fragment() {
 
     fun correct_answer(){
         Toast.makeText(context, "correct ", Toast.LENGTH_SHORT).show()
+        showNextQuestion()
 
     }
     fun wrong_answer(){
         Toast.makeText(context, "wrong", Toast.LENGTH_SHORT).show()
+        showNextQuestion()
 
     }
 
@@ -90,7 +95,10 @@ class QuizAudioFragment : Fragment() {
             currentView.findViewById(R.id.button8),
             currentView.findViewById(R.id.button9))
         for (i in 0..3){
-            buttons[i].setText(arr[i].word)
+            if (word.knowledge == 1)
+                buttons[i].setText(arr[i].word)
+            else
+                buttons[i].setText(arr[i].translation)
             if (arr[i] == word)
                 buttons[i].setOnClickListener{
                     correct_answer()
@@ -102,6 +110,37 @@ class QuizAudioFragment : Fragment() {
         }
     }
 
+    private fun showNextQuestion(){
+        sharedViewModel.NextWord+=1
+        findNavController().popBackStack()
+        if (sharedViewModel.CurrentWords == null || sharedViewModel.CurrentWords!!.words.size <= sharedViewModel.NextWord){
+
+
+            findNavController().navigate(R.id.nav_learn)
+        }
+        val word = sharedViewModel.CurrentWords!!.words[sharedViewModel.NextWord]
+        if (word.knowledge == 1 || word.knowledge==3){
+            try{
+                findNavController().navigate(R.id.quizAudioFragment)
+            } catch (e: Exception){
+                Log.e("ChangeLayout", "${e.message}", e)
+            }
+        }
+        else if (word.knowledge== 2 || word.knowledge == 4){
+            try{
+                findNavController().navigate(R.id.quizTextFragment)
+            } catch (e: Exception){
+                Log.e("ChangeLayout", "${e.message}", e)
+            }
+        }
+        else{
+            try{
+                findNavController().navigate(R.id.quizCardFragment)
+            } catch (e: Exception){
+                Log.e("ChangeLayout", "${e.message}", e)
+            }
+        }
+    }
 
 
 }

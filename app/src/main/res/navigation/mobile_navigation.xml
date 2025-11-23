@@ -43,6 +43,14 @@
         android:id="@+id/quizAudioFragment"
         android:name="com.example.languageleap.ui.quiz.QuizAudioFragment"
         android:label="Quiz Audio" />
+    <fragment
+        android:id="@+id/quizTextFragment"
+        android:name="com.example.languageleap.ui.quiz.QuizTextFragment"
+        android:label="Quiz Text" />
+    <fragment
+        android:id="@+id/quizCardFragment"
+        android:name="com.example.languageleap.ui.quiz.QuizFleshcardFragment"
+        android:label="Quiz Card" />
 
     <fragment
         android:id="@+id/textFragment"

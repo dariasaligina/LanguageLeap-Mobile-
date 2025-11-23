@@ -53,8 +53,6 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.1")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-
-
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

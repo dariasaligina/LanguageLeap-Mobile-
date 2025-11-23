@@ -15,7 +15,9 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavAction
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.example.languageleap.MainActivity
 import com.example.languageleap.SharedDataViewModel
 import com.example.languageleap.R
@@ -74,33 +76,35 @@ class QuizMainFragment : Fragment() {
 
     private fun showNextQuestion(){
         sharedViewModel.NextWord+=1
+        
         if (sharedViewModel.CurrentWords == null || sharedViewModel.CurrentWords!!.words.size <= sharedViewModel.NextWord){
             loadDataFromNetwork()
             sharedViewModel.NextWord = 0
             if (sharedViewModel.CurrentWords == null || sharedViewModel.CurrentWords!!.words.size <= sharedViewModel.NextWord)
-                return
+                findNavController().navigate(R.id.nav_learn)
         }
         val word = sharedViewModel.CurrentWords!!.words[sharedViewModel.NextWord]
-
-        if (word.knowledge == 1){
+        if (word.knowledge == 1 || word.knowledge==3){
             try{
                 findNavController().navigate(R.id.quizAudioFragment)
             } catch (e: Exception){
                 Log.e("ChangeLayout", "${e.message}", e)
             }
         }
-    }
-
-
-
-
-    fun correct_answer(){
-        Toast.makeText(context, "correct ", Toast.LENGTH_SHORT).show()
-
-    }
-    fun wrong_answer(){
-        Toast.makeText(context, "wrong", Toast.LENGTH_SHORT).show()
-
+        else if (word.knowledge== 2 || word.knowledge == 4){
+            try{
+                findNavController().navigate(R.id.quizTextFragment)
+            } catch (e: Exception){
+                Log.e("ChangeLayout", "${e.message}", e)
+            }
+        }
+        else{
+            try{
+                findNavController().navigate(R.id.quizCardFragment)
+            } catch (e: Exception){
+                Log.e("ChangeLayout", "${e.message}", e)
+            }
+        }
     }
 
 
