@@ -2,12 +2,16 @@ package com.example.languageleap.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.example.languageleap.SharedDataViewModel
 import com.example.languageleap.databinding.ItemTextCardBinding
 import com.squareup.picasso.Picasso
+import kotlin.getValue
 
-class TextCardAdapter(private val textList: List<TextCardItem>) :
+class TextCardAdapter(private val textList: List<TextCardItem>, private val sharedViewModel: SharedDataViewModel) :
     RecyclerView.Adapter<TextCardAdapter.TextCardViewHolder>() {
+
 
     inner class TextCardViewHolder(private val binding: ItemTextCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -17,7 +21,7 @@ class TextCardAdapter(private val textList: List<TextCardItem>) :
             binding.textViewLikes.text = textItem.likes.toString()
 
             // Construct the full image URL. Adjust the base URL if your server is different.
-            val baseUrl = "http://192.168.0.34:8000"
+            val baseUrl = sharedViewModel.host
             val imageUrl = baseUrl + textItem.image
 
             // Load image using Picasso

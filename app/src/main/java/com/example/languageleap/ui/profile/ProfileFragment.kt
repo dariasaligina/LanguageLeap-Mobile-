@@ -43,7 +43,7 @@ class ProfileFragment : Fragment() {
     private val httpClient = OkHttpClient()
     private val gson = Gson()
 
-    private val apiUrl = "http://192.168.0.34:8000/api/profile"
+    private lateinit var apiUrl: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +55,7 @@ class ProfileFragment : Fragment() {
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        apiUrl =sharedViewModel.host + "/api/profile"
         setupRecyclerView()
         loadDataFromNetwork()
 
@@ -113,7 +114,7 @@ class ProfileFragment : Fragment() {
         }
     }
     private fun setupRecyclerView(recyclerView: RecyclerView, texts: List<TextCardItem>, category: String) {
-        val adapter = TextCardAdapter(texts)
+        val adapter = TextCardAdapter(texts, sharedViewModel)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
     }

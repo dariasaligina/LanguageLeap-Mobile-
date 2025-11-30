@@ -77,7 +77,7 @@ class QuizAudioFragment : Fragment() {
         arr.shuffle()
         val button: ImageButton = currentView.findViewById(R.id.imageButton2)
         button.setOnClickListener {
-            val url = "http://192.168.0.34:8000"+word.audio // your URL here
+            val url = sharedViewModel.host+word.audio // your URL here
             val mediaPlayer = MediaPlayer().apply {
                 setAudioAttributes(
                     AudioAttributes.Builder()

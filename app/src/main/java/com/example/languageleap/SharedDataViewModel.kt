@@ -36,6 +36,7 @@ class SharedDataViewModel : ViewModel() {
     // 2. MutableLiveData для хранения состояния аутентификации (объект ответа)
     // Используем nullable тип (AuthResponse?), так как изначально данных нет
     private val _authData = MutableLiveData<AuthResponse?>()
+    val host:String = "http://10.242.74.144:8000"
 
     val authData: LiveData<AuthResponse?> = _authData
     private val client = OkHttpClient()
@@ -73,7 +74,7 @@ class SharedDataViewModel : ViewModel() {
         val mediaType = "application/json; charset=utf-8".toMediaType()
         val body = RequestBody.create(mediaType, json)
         val request = Request.Builder()
-            .url("http://192.168.0.34:8000/api/login")  // Replace with your actual endpoint
+            .url(host+"/api/login")  // Replace with your actual endpoint
             .post(body)
             .build()
         client.newCall(request).enqueue(object : Callback {

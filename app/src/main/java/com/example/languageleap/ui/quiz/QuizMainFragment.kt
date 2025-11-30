@@ -37,7 +37,7 @@ class QuizMainFragment : Fragment() {
     private val httpClient = OkHttpClient()
     private val gson = Gson()
 
-    private val apiUrl = "http://192.168.0.34:8000/api/learn"
+    private lateinit var apiUrl :String
 
 
     private lateinit var container: ViewGroup
@@ -48,6 +48,7 @@ class QuizMainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        apiUrl =sharedViewModel.host + "/api/learn"
 
     }
 

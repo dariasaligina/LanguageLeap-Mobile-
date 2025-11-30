@@ -7,17 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.languageleap.R
 import com.example.languageleap.databinding.FragmentHomeBinding
 import com.google.gson.Gson
 import androidx.recyclerview.widget.RecyclerView
+import com.example.languageleap.SharedDataViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import kotlin.getValue
 
 class HomeFragment : Fragment() {
 
@@ -30,8 +34,9 @@ class HomeFragment : Fragment() {
 
     private val httpClient = OkHttpClient()
     private val gson = Gson()
+    private val sharedViewModel: SharedDataViewModel by activityViewModels()
 
-    private val apiUrl = "http://192.168.0.34:8000/json/catalog"
+    private lateinit var apiUrl: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +48,7 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        apiUrl =sharedViewModel.host + "/json/catalog"
         setupRecyclerView()
         loadDataFromNetwork()
 
@@ -87,7 +93,7 @@ class HomeFragment : Fragment() {
             val response = gson.fromJson(jsonString, JsonResponseCatalog::class.java)
             val texts = response.texts
 
-            textAdapter = TextCardAdapter(texts)
+            textAdapter = TextCardAdapter(texts, sharedViewModel)
             binding.recyclerViewTexts.adapter = textAdapter
 
             Log.d("HomeFragment", "Данные успешно отображены. Количество: ${texts.size}")
