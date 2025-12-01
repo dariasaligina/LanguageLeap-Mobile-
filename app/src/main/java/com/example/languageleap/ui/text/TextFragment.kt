@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
@@ -91,6 +92,74 @@ class TextFragment : Fragment() {
         for (word in sharedViewModel.CurrentWords.all_words){
             highlightWord(word.word)
         }
+        val titleView: TextView = view.findViewById(R.id.textView9)
+        titleView.setText(sharedViewModel.currentText.text.name)
+        val buttonDone: Button = view.findViewById(R.id.button11)
+        val buttonNow: Button = view.findViewById(R.id.button4)
+        val buttonWill: Button = view.findViewById(R.id.button3)
+        if (sharedViewModel.currentText.text_status == 1){
+            buttonDone.setBackgroundColor(resources.getColor(R.color.purple_700))
+        }
+        if (sharedViewModel.currentText.text_status==2){
+            buttonNow.setBackgroundColor(resources.getColor(R.color.purple_700))
+        }
+        if (sharedViewModel.currentText.text_status== 3){
+            buttonWill.setBackgroundColor(resources.getColor(R.color.purple_700))
+        }
+        buttonDone.setOnClickListener {
+            colorButtons()
+            buttonDone.setBackgroundColor(resources.getColor(R.color.purple_700))
+            val apiUrl = sharedViewModel.host+"/api/update_text_status/${sharedViewModel.currentText.text.id}/1"
+            updateStatus(apiUrl)
+
+        }
+
+        buttonNow.setOnClickListener {
+            colorButtons()
+            buttonNow.setBackgroundColor(resources.getColor(R.color.purple_700))
+            val apiUrl = sharedViewModel.host+"/api/update_text_status/${sharedViewModel.currentText.text.id}/2"
+            updateStatus(apiUrl)
+        }
+
+        buttonWill.setOnClickListener {
+            colorButtons()
+            buttonWill.setBackgroundColor(resources.getColor(R.color.purple_700))
+            val apiUrl = sharedViewModel.host+"/api/update_text_status/${sharedViewModel.currentText.text.id}/3"
+            updateStatus(apiUrl)
+        }
+
+    }
+
+    fun updateStatus(url: String){
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val request = Request.Builder()
+                    .url(url)
+                    .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
+                    .build()
+
+                // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
+                httpClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
+                    val jsonString = response.body?.string() ?: ""
+                    // Переключаемся обратно в главный поток для обновления UI
+
+                }
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Ошибка сетевого запроса: ${e.message}", e)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }}
+
+    private fun colorButtons(){
+        val buttonDone: Button = view.findViewById(R.id.button11)
+        buttonDone.setBackgroundColor(resources.getColor(R.color.purple_500))
+        val buttonNow: Button = view.findViewById(R.id.button4)
+        buttonNow.setBackgroundColor(resources.getColor(R.color.purple_500))
+        val buttonWill: Button = view.findViewById(R.id.button3)
+        buttonWill.setBackgroundColor(resources.getColor(R.color.purple_500))
     }
 
     private fun saveWord(word: String){
