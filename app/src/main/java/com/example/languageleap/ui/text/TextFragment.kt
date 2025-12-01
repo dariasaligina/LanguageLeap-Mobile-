@@ -56,10 +56,7 @@ class TextFragment : Fragment() {
         textView = view.findViewById(R.id.textView10)
         textView.setText(sharedViewModel.currentText.text.text)
 
-        /*
-        for (word in sharedViewModel.CurrentWords!!.all_words){
-            highlightWord(word.word)
-        }*/
+        
 
         textView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {

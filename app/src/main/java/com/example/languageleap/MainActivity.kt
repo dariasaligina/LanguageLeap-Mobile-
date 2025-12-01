@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
-                R.id.nav_login, R.id.nav_registration,R.id.nav_learn,
+                R.id.nav_learn,
                  R.id.addTextFragment,R.id.nav_profile,
             ), drawerLayout
         )

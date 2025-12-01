@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.languageleap.R
 import com.example.languageleap.databinding.FragmentHomeBinding
 import com.google.gson.Gson
@@ -43,6 +44,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        if (!sharedViewModel.isLoggedIn()){
+            findNavController().navigate(R.id.nav_login)
+        }
 
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -52,8 +56,12 @@ class HomeFragment : Fragment() {
         loadDataFromNetwork()
 
 
+
+
         return root
     }
+
+
 
     private fun setupRecyclerView() {
         // ... (код setupRecyclerView) ...

@@ -10,16 +10,7 @@
             android:title="@string/menu_home" />
 
 
-        <item
-            android:id="@+id/nav_login"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Логин"
-            />
-        <item
-            android:id="@+id/nav_registration"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Регистрация"
-            />
+
         <item
             android:id="@+id/nav_learn"
             android:icon="@drawable/school_24px"
@@ -33,8 +24,8 @@
             />
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/school_24px"
-            android:title="Profile"
+            android:icon="@drawable/account_circle_24px"
+            android:title="Профиль"
             />
 
     </group>

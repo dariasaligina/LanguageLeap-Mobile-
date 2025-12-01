@@ -13,8 +13,10 @@ import com.example.languageleap.SharedDataViewModel
 import android.widget.Toast
 import com.google.gson.Gson
 import android.util.Log
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.languageleap.AuthResponse
 
 
@@ -29,6 +31,7 @@ class FragmentLogin : Fragment() {
     private lateinit var editTextUsername: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var buttonLogin: Button
+    private lateinit var toRegister: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +44,7 @@ class FragmentLogin : Fragment() {
         editTextUsername = view.findViewById(R.id.editTextText) // ID из вашего XML
         editTextPassword = view.findViewById(R.id.editTextTextPassword) // ID из вашего XML
         buttonLogin = view.findViewById(R.id.button) // ID из вашего XML
+        toRegister = view.findViewById(R.id.textView2)
 
         return view
     }
@@ -61,15 +65,19 @@ class FragmentLogin : Fragment() {
                 sharedViewModel.authData.observe(viewLifecycleOwner) { authResponse ->
                     authResponse?.let {
                         // Show token if authentication is successful
-                        Toast.makeText(context, "Token: ${it.token}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Аутентификация прошла успешно", Toast.LENGTH_SHORT).show()
                     } ?: run {
-                        Toast.makeText(context, "Login failed or no data received", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Ошибка аутентификации", Toast.LENGTH_SHORT).show()
                     }
                 }
 
             } else {
                 Toast.makeText(context, "Пожалуйста, введите логин и пароль", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        toRegister.setOnClickListener {
+            findNavController().navigate(R.id.nav_registration)
         }
 
     }

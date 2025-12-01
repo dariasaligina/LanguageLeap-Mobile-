@@ -57,6 +57,9 @@ class QuizMainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        if (!sharedViewModel.isLoggedIn()){
+            findNavController().navigate(R.id.nav_login)
+        }
         try{
             container = container1!!
             currentView = inflater.inflate(R.layout.fragment_quiz_main, container, false)
