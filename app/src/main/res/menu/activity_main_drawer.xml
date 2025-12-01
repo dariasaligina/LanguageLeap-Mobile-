@@ -8,34 +8,24 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/book_2_24px"
             android:title="@string/menu_home" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+
+
         <item
             android:id="@+id/nav_login"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow"
+            android:title="Логин"
             />
         <item
             android:id="@+id/nav_registration"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow"
+            android:title="Регистрация"
             />
         <item
             android:id="@+id/nav_learn"
             android:icon="@drawable/school_24px"
             android:title="@string/learn_words"
             />
-        <item
-            android:id="@+id/textFragment"
-            android:icon="@drawable/school_24px"
-            android:title="Text"
-            />
+
         <item
             android:id="@+id/addTextFragment"
             android:icon="@drawable/school_24px"

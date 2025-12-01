@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.languageleap.ui.quiz.JsonResponseCurrentWords
 import com.example.languageleap.ui.quiz.Word
+import com.example.languageleap.ui.text.JsonTextResponce
 import com.google.gson.Gson
 import okhttp3.Call
 import okhttp3.OkHttpClient
@@ -15,7 +16,7 @@ import okhttp3.Response
 import okio.IOException
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Callback
-
+import org.intellij.lang.annotations.Language
 
 
 // 1. Определите класс данных (Data Class) для хранения ответа API
@@ -24,7 +25,8 @@ import okhttp3.Callback
 data class AuthResponse(
     val token: String,      // Токен для последующих запросов
     val username: String,   // Имя пользователя
-    val userId: Int         // ID пользователя
+    val userId: Int,
+    val languageCode: String// ID пользователя
 )
 data class LoginRequest(
     val username: String,
@@ -41,13 +43,21 @@ class SharedDataViewModel : ViewModel() {
     val authData: LiveData<AuthResponse?> = _authData
     private val client = OkHttpClient()
     private val gson = Gson()
-    var CurrentWords: JsonResponseCurrentWords? = null
+    var CurrentWords: JsonResponseCurrentWords = JsonResponseCurrentWords(emptyArray(),emptyArray())
     var NextWord:Int = -1
+
+    lateinit var currentText: JsonTextResponce
+
+
 
 
     fun getToken():String{
 
         return _authData.value!!.token
+    }
+
+    fun getLanguageCode():String{
+        return _authData.value!!.languageCode
     }
 
 
@@ -106,6 +116,8 @@ class SharedDataViewModel : ViewModel() {
             }
         })
     }
+
+
 }
 
 

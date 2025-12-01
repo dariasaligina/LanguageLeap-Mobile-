@@ -16,7 +16,7 @@ import com.example.languageleap.R
 import com.example.languageleap.SharedDataViewModel
 import com.example.languageleap.databinding.FragmentHomeBinding
 import com.example.languageleap.databinding.FragmentProfileBinding
-import com.example.languageleap.ui.home.HomeViewModel
+
 import com.example.languageleap.ui.home.JsonResponseCatalog
 import com.example.languageleap.ui.home.TextCardAdapter
 import com.example.languageleap.ui.home.TextCardItem
@@ -50,8 +50,7 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -114,7 +113,7 @@ class ProfileFragment : Fragment() {
         }
     }
     private fun setupRecyclerView(recyclerView: RecyclerView, texts: List<TextCardItem>, category: String) {
-        val adapter = TextCardAdapter(texts, sharedViewModel)
+        val adapter = TextCardAdapter(texts, sharedViewModel, viewLifecycleOwner.lifecycleScope, this)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
     }

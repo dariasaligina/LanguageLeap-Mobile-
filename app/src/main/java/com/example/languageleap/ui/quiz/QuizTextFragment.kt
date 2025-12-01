@@ -13,10 +13,17 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.languageleap.R
 import com.example.languageleap.SharedDataViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import kotlin.getValue
 
 
@@ -25,15 +32,48 @@ class QuizTextFragment : Fragment() {
     private lateinit var sharedViewModel: SharedDataViewModel
     lateinit var word:Word
     lateinit var all_words: Array<Word>
+    private val httpClient = OkHttpClient()
 
     fun correct_answer(){
-        Toast.makeText(context, "correct ", Toast.LENGTH_SHORT).show()
+
+        Snackbar.make(currentView, "Правильно!! ${word.word} - ${word.translation}", Snackbar.LENGTH_INDEFINITE).show()
+        updateWord(1)
         showNextQuestion()
 
     }
     fun wrong_answer(){
-        Toast.makeText(context, "wrong", Toast.LENGTH_SHORT).show()
+
+        Snackbar.make(currentView, "Неправильно :( ${word.word} - ${word.translation}", Snackbar.LENGTH_INDEFINITE).show()
+        updateWord(0)
         showNextQuestion()
+
+    }
+
+
+
+    private fun updateWord(isCorrect: Int){
+
+        val apiUrl = sharedViewModel.host+"/saved_word_update/"+word.saved_word_id.toString()+"/"+isCorrect.toString()
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val request = Request.Builder()
+                    .url(apiUrl)
+                    .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
+                    .build()
+
+                // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
+                httpClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
+
+
+                }
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Ошибка сетевого запроса: ${e.message}", e)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
     }
 
