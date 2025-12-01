@@ -81,13 +81,13 @@ class QuizMainFragment : Fragment() {
     private fun showNextQuestion(){
         sharedViewModel.NextWord+=1
         
-        if (sharedViewModel.CurrentWords == null || sharedViewModel.CurrentWords!!.words.size <= sharedViewModel.NextWord){
+        if ( sharedViewModel.CurrentWords.words.size <= sharedViewModel.NextWord){
             loadDataFromNetwork()
             sharedViewModel.NextWord = 0
-            if (sharedViewModel.CurrentWords == null || sharedViewModel.CurrentWords!!.words.size <= sharedViewModel.NextWord)
+            if ( sharedViewModel.CurrentWords.words.size <= sharedViewModel.NextWord)
                 findNavController().navigate(R.id.nav_learn)
         }
-        val word = sharedViewModel.CurrentWords!!.words[sharedViewModel.NextWord]
+        val word = sharedViewModel.CurrentWords.words[sharedViewModel.NextWord]
         if (word.knowledge == 1 || word.knowledge==3){
             try{
                 findNavController().navigate(R.id.quizAudioFragment)

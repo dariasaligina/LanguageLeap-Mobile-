@@ -55,12 +55,7 @@
                 android:layout_margin="30px"
                 android:text="Выберите файл изображения" />
 
-            <Button
-                android:id="@+id/audioButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="30px"
-                android:text="Выберите файл аудио" />
+
 
             <CheckBox
                 android:id="@+id/publicCheckbox"

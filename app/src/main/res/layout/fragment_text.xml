@@ -44,29 +44,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/button4" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="70dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/white"
-            android:scaleType="fitCenter"
-            android:src="@drawable/play_circle_24px"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="285dp"
+            android:layout_width="0dp"
             android:layout_height="65dp"
+
             android:gravity="center_vertical"
             android:text="Thanksgiving Day"
-
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.333"
-            app:layout_constraintStart_toEndOf="@+id/imageButton"
+            app:layout_constraintStart_toStartOf="@+id/button11"
             app:layout_constraintTop_toTopOf="@+id/imageButton" />
 
         <ScrollView

@@ -52,7 +52,7 @@ class TextCardAdapter(private val textList: List<TextCardItem>, private val shar
             // Handle item clicks (optional)
             itemView.setOnClickListener {
 
-
+                loadWordsFromNetwork()
 
                 val apiUrl: String = sharedViewModel.host+"/api/text/${textItem.id}/"
                 scope.launch(Dispatchers.IO) {
@@ -78,7 +78,7 @@ class TextCardAdapter(private val textList: List<TextCardItem>, private val shar
 
                     }
                 }
-                loadWordsFromNetwork()
+
 
 
 
