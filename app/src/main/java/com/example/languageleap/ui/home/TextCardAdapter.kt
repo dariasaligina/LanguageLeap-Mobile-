@@ -34,26 +34,19 @@ class TextCardAdapter(private val textList: List<TextCardItem>, private val shar
     private val httpClient = OkHttpClient()
     private val gson = Gson()
 
-
     inner class TextCardViewHolder(private val binding: ItemTextCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(textItem: TextCardItem) {
             binding.textViewTitle.text = textItem.name
             binding.textViewLevel.text = textItem.language_level
             binding.textViewLikes.text = textItem.likes.toString()
-
-            // Construct the full image URL. Adjust the base URL if your server is different.
             val baseUrl = sharedViewModel.host
             val imageUrl = baseUrl + textItem.image
 
-            // Load image using Picasso
             Picasso.get().load(imageUrl).into(binding.imageViewTextImage)
 
-            // Handle item clicks (optional)
             itemView.setOnClickListener {
-
                 loadWordsFromNetwork()
-
                 val apiUrl: String = sharedViewModel.host+"/api/text/${textItem.id}/"
                 scope.launch(Dispatchers.IO) {
                     try {
@@ -62,13 +55,13 @@ class TextCardAdapter(private val textList: List<TextCardItem>, private val shar
                             .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
                             .build()
 
-                        // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
+
                         httpClient.newCall(request).execute().use { response ->
                             if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
 
                             val jsonString = response.body?.string() ?: ""
 
-                            // Переключаемся обратно в главный поток для обновления UI
+
                             withContext(Dispatchers.Main) {
                                 parseTextData(jsonString)
                             }
@@ -78,17 +71,11 @@ class TextCardAdapter(private val textList: List<TextCardItem>, private val shar
 
                     }
                 }
-
-
-
-
-
             }
         }
     }
 
     private fun loadWordsFromNetwork() {
-        // Запускаем корутину в жизненном цикле фрагмента
         scope.launch(Dispatchers.IO) {
             val apiUrl=sharedViewModel.host + "/api/learn"
             try {
@@ -97,13 +84,11 @@ class TextCardAdapter(private val textList: List<TextCardItem>, private val shar
                     .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
                     .build()
 
-                // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
                 httpClient.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
 
                     val jsonString = response.body?.string() ?: ""
 
-                    // Переключаемся обратно в главный поток для обновления UI
                     withContext(Dispatchers.Main) {
                         parseWordData(jsonString)
                     }

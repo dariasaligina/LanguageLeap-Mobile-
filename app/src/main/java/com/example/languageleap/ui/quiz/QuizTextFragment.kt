@@ -49,10 +49,7 @@ class QuizTextFragment : Fragment() {
 
     }
 
-
-
     private fun updateWord(isCorrect: Int){
-
         val apiUrl = sharedViewModel.host+"/saved_word_update/"+word.saved_word_id.toString()+"/"+isCorrect.toString()
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -60,12 +57,8 @@ class QuizTextFragment : Fragment() {
                     .url(apiUrl)
                     .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
                     .build()
-
-                // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
                 httpClient.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
-
-
                 }
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Ошибка сетевого запроса: ${e.message}", e)
@@ -74,32 +67,26 @@ class QuizTextFragment : Fragment() {
                 }
             }
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedViewModel1: SharedDataViewModel by activityViewModels()
         sharedViewModel = sharedViewModel1
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         currentView = inflater.inflate(R.layout.fragment_quiz_text, container, false)
         return currentView
     }
-
 
     private fun showNextQuestion(){
         sharedViewModel.NextWord+=1
         findNavController().popBackStack()
         if (sharedViewModel.CurrentWords == null || sharedViewModel.CurrentWords!!.words.size <= sharedViewModel.NextWord){
-
-
             findNavController().navigate(R.id.nav_learn)
         }
         val word = sharedViewModel.CurrentWords!!.words[sharedViewModel.NextWord]
@@ -129,13 +116,10 @@ class QuizTextFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         sharedViewModel.CurrentWords?.let {
             word = it.words[sharedViewModel.NextWord]
             all_words = it.all_words
         }
-
-
         all_words.shuffle()
         var arr = arrayOf(all_words[0], all_words[1], all_words[2], word)
         arr.shuffle()
@@ -146,7 +130,6 @@ class QuizTextFragment : Fragment() {
         else{
             text.setText(word.translation)
         }
-
         val buttons = arrayOf<Button>(currentView.findViewById(R.id.button6),
             currentView.findViewById(R.id.button7),
             currentView.findViewById(R.id.button8),
@@ -166,8 +149,4 @@ class QuizTextFragment : Fragment() {
                 }
         }
     }
-
-
-
-
 }

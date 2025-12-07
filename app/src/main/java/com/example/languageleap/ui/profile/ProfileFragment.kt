@@ -17,7 +17,6 @@ import com.example.languageleap.R
 import com.example.languageleap.SharedDataViewModel
 import com.example.languageleap.databinding.FragmentHomeBinding
 import com.example.languageleap.databinding.FragmentProfileBinding
-
 import com.example.languageleap.ui.home.JsonResponseCatalog
 import com.example.languageleap.ui.home.TextCardAdapter
 import com.example.languageleap.ui.home.TextCardItem
@@ -32,18 +31,12 @@ import kotlin.getValue
 
 
 class ProfileFragment : Fragment() {
-
     private var _binding: FragmentProfileBinding? = null
     private lateinit var textAdapter: TextCardAdapter
     private val sharedViewModel: SharedDataViewModel by activityViewModels()
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
     private val httpClient = OkHttpClient()
     private val gson = Gson()
-
     private lateinit var apiUrl: String
 
     override fun onCreateView(
@@ -54,38 +47,27 @@ class ProfileFragment : Fragment() {
         if (!sharedViewModel.isLoggedIn()){
             findNavController().navigate(R.id.nav_login)
         }
-
-
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
         apiUrl =sharedViewModel.host + "/api/profile"
         setupRecyclerView()
         loadDataFromNetwork()
-
-
         return root
     }
 
     private fun setupRecyclerView() {
-        // ... (код setupRecyclerView) ...
     }
 
     private fun loadDataFromNetwork() {
-        // Запускаем корутину в жизненном цикле фрагмента
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val request = Request.Builder()
                     .url(apiUrl)
                     .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
                     .build()
-
-                // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
                 httpClient.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
-
                     val jsonString = response.body?.string() ?: ""
-
-                    // Переключаемся обратно в главный поток для обновления UI
                     withContext(Dispatchers.Main) {
                         parseAndDisplayData(jsonString)
                     }
@@ -102,15 +84,10 @@ class ProfileFragment : Fragment() {
     private fun parseAndDisplayData(jsonString: String) {
         try {
             val response = gson.fromJson(jsonString, JsonResponseProfile::class.java)
-
-            // Обновите RecyclerView для каждой категории
             setupRecyclerView(binding.recyclerViewMyTexts, response.my_texts, "Мои тексты")
             setupRecyclerView(binding.recyclerViewCompletedTexts, response.completed_texts, "Завершенные тексты")
             setupRecyclerView(binding.recyclerViewCurrentTexts, response.current_texts, "Текущие тексты")
             setupRecyclerView(binding.recyclerViewFutureTexts, response.future_texts, "Будущие тексты")
-
-
-
         } catch (e: Exception) {
             Log.e("HomeFragment", "Ошибка парсинга JSON: ${e.message}", e)
             Toast.makeText(context, "Ошибка обработки данных: ${e.message} ", Toast.LENGTH_SHORT).show()

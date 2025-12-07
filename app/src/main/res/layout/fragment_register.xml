@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.register.RegisterFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +14,7 @@
         android:padding="24dp"
         tools:context=".LoginActivity">
 
-        <!-- ... (содержание XML из исходного текста) ... -->
+
 
         <EditText
             android:id="@+id/editTextText"
@@ -64,7 +62,7 @@
             android:paddingBottom="30px" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30px"

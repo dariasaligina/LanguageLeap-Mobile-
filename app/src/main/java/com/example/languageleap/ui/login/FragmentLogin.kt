@@ -11,15 +11,8 @@ import androidx.fragment.app.activityViewModels
 import com.example.languageleap.R
 import com.example.languageleap.SharedDataViewModel
 import android.widget.Toast
-import com.google.gson.Gson
-import android.util.Log
 import android.widget.TextView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.languageleap.AuthResponse
-
-
 
 
 class FragmentLogin : Fragment() {

@@ -41,14 +41,12 @@ class QuizAudioFragment : Fragment() {
     }
 
     fun correct_answer(){
-
         Snackbar.make(currentView, "Правильно!! ${word.word} - ${word.translation}", Snackbar.LENGTH_INDEFINITE).show()
         updateWord(1)
         showNextQuestion()
 
     }
     fun wrong_answer(){
-
         Snackbar.make(currentView, "Неправильно :( ${word.word} - ${word.translation}", Snackbar.LENGTH_INDEFINITE).show()
         updateWord(0)
         showNextQuestion()
@@ -65,8 +63,6 @@ class QuizAudioFragment : Fragment() {
                     .url(apiUrl)
                     .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
                     .build()
-
-                // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
                 httpClient.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
 
@@ -93,24 +89,16 @@ class QuizAudioFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
-        // Inflate the layout for this fragment
         currentView = inflater.inflate(R.layout.fragment_quiz_audio, container, false)
-
         return currentView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         sharedViewModel.CurrentWords?.let {
             word = it.words[sharedViewModel.NextWord]
             all_words = it.all_words
         }
-
-
-
         all_words.shuffle()
         var arr = arrayOf(all_words[0], all_words[1], all_words[2], word)
         arr.shuffle()
@@ -125,7 +113,7 @@ class QuizAudioFragment : Fragment() {
                         .build()
                 )
                 setDataSource(url)
-                prepare() // might take long! (for buffering, etc)
+                prepare()
                 start()
             }
         }
@@ -153,8 +141,6 @@ class QuizAudioFragment : Fragment() {
         sharedViewModel.NextWord+=1
         findNavController().popBackStack()
         if (sharedViewModel.CurrentWords == null || sharedViewModel.CurrentWords!!.words.size <= sharedViewModel.NextWord){
-
-
             findNavController().navigate(R.id.nav_learn)
         }
         val word = sharedViewModel.CurrentWords!!.words[sharedViewModel.NextWord]
@@ -180,6 +166,4 @@ class QuizAudioFragment : Fragment() {
             }
         }
     }
-
-
 }

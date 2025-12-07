@@ -36,13 +36,9 @@ class QuizMainFragment : Fragment() {
     private val sharedViewModel: SharedDataViewModel by activityViewModels()
     private val httpClient = OkHttpClient()
     private val gson = Gson()
-
     private lateinit var apiUrl :String
-
-
     private lateinit var container: ViewGroup
     private lateinit var currentWords: JsonResponseCurrentWords
-
     private lateinit var currentView: View
 
 
@@ -56,7 +52,6 @@ class QuizMainFragment : Fragment() {
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         if (!sharedViewModel.isLoggedIn()){
             findNavController().navigate(R.id.nav_login)
         }
@@ -75,12 +70,8 @@ class QuizMainFragment : Fragment() {
         return currentView
     }
 
-
-
-
     private fun showNextQuestion(){
         sharedViewModel.NextWord+=1
-        
         if ( sharedViewModel.CurrentWords.words.size <= sharedViewModel.NextWord){
             loadDataFromNetwork()
             sharedViewModel.NextWord = 0
@@ -111,24 +102,16 @@ class QuizMainFragment : Fragment() {
         }
     }
 
-
-
     private fun loadDataFromNetwork() {
-        // Запускаем корутину в жизненном цикле фрагмента
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val request = Request.Builder()
                     .url(apiUrl)
                     .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
                     .build()
-
-                // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
                 httpClient.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
-
                     val jsonString = response.body?.string() ?: ""
-
-                    // Переключаемся обратно в главный поток для обновления UI
                     withContext(Dispatchers.Main) {
                         parseData(jsonString)
                     }
@@ -149,13 +132,9 @@ class QuizMainFragment : Fragment() {
             text.setText("Сегодня вам следует повторить ${response.words.size} слов.")
             currentWords=response
             sharedViewModel.CurrentWords = response
-
-
         } catch (e: Exception) {
             Log.e("HomeFragment", "Ошибка парсинга JSON: ${e.message}", e)
             Toast.makeText(context, "Ошибка обработки данных: ${e.message} ", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 }

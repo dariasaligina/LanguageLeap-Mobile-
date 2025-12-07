@@ -38,7 +38,6 @@ class TextFragment : Fragment() {
     private val gson = Gson()
     private lateinit var view: View
     private var punctuationMarks = "!\"#\$%&'()*+,./:;<=>?@^_`{|}~"
-
     private lateinit var apiUrl :String
 
 
@@ -51,7 +50,7 @@ class TextFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_text, container, false)
         textView = view.findViewById(R.id.textView10)
         textView.setText(sharedViewModel.currentText.text.text)
@@ -73,7 +72,7 @@ class TextFragment : Fragment() {
                         saveWord(word)
                         break
                     }
-                    wordStart = wordEnd + 1 // Учитываем пробел
+                    wordStart = wordEnd + 1
                 }
             }
             true
@@ -135,12 +134,9 @@ class TextFragment : Fragment() {
                     .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
                     .build()
 
-                // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
                 httpClient.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
                     val jsonString = response.body?.string() ?: ""
-                    // Переключаемся обратно в главный поток для обновления UI
-
                 }
             } catch (e: Exception) {
                 Log.e("HomeFragment", "Ошибка сетевого запроса: ${e.message}", e)
@@ -163,8 +159,6 @@ class TextFragment : Fragment() {
         highlightWord(word)
         var cleanWord = word.lowercase()
         cleanWord = cleanWord.filterNot { it in punctuationMarks.toSet() }
-
-
         highlightWord(cleanWord)
         apiUrl = sharedViewModel.host+"/translate_word/"+sharedViewModel.getLanguageCode()+"/"+cleanWord
         lifecycleScope.launch(Dispatchers.IO) {
@@ -174,13 +168,10 @@ class TextFragment : Fragment() {
                     .addHeader("Authorization", "Token ${sharedViewModel.getToken()}")
                     .build()
 
-                // Выполняем синхронный запрос в фоновом потоке (Dispatchers.IO)
                 httpClient.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw _root_ide_package_.okio.IOException("Unexpected code $response") as Throwable
 
                     val jsonString = response.body?.string() ?: ""
-
-                    // Переключаемся обратно в главный поток для обновления UI
                     withContext(Dispatchers.Main) {
                         parseData(jsonString)
                     }
@@ -212,10 +203,10 @@ class TextFragment : Fragment() {
         var start = 0
         while (start < spannable.length) {
             start = spannable.indexOf(word, start)
-            if (start == -1) break // Если вхождение не найдено, выходим из цикла
+            if (start == -1) break
 
             spannable.setSpan(BackgroundColorSpan(Color.YELLOW), start, start + word.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            start += word.length // Увеличиваем индекс для поиска следующего вхождения
+            start += word.length
         }
         textView.text = spannable
     }
